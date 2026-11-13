@@ -9,6 +9,38 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Organize project files
+        run: |
+          mkdir -p src/main/java/com/example/knifeclient/mixin
+          mkdir -p src/main/resources/assets/knifeclient/items
+          mkdir -p src/main/resources/assets/knifeclient/models/item
+          mkdir -p src/main/resources/assets/knifeclient/textures/item
+          mkdir -p src/main/resources/assets/knifeclient/lang
+
+          for f in *.java; do
+            if grep -q "package com.example.knifeclient.mixin;" "$f"; then
+              mv "$f" src/main/java/com/example/knifeclient/mixin/
+            else
+              mv "$f" src/main/java/com/example/knifeclient/
+            fi
+          done
+
+          mv fabric.mod.json src/main/resources/
+          mv knifeclient.mixins.json src/main/resources/
+          mv en_us.json src/main/resources/assets/knifeclient/lang/
+          mv *.png src/main/resources/assets/knifeclient/textures/item/
+
+          for knife in bayonet butterfly huntsman karambit; do
+            for f in ${knife}*.json; do
+              if grep -q "minecraft:model" "$f"; then
+                mv "$f" "src/main/resources/assets/knifeclient/items/${knife}.json"
+              else
+                mv "$f" "src/main/resources/assets/knifeclient/models/item/${knife}.json"
+              fi
+            done
+          done
+
       - uses: gradle/actions/setup-gradle@v4
       - run: gradle build
       - uses: actions/upload-artifact@v4
