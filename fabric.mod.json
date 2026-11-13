@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "knifeclient",
+  "version": "${version}",
+  "name": "Knife Client",
+  "description": "Client-side cosmetics: glow skin, headless, korblox leg, and knives instead of fists.",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.example.knifeclient.KnifeClient"]
+  },
+  "mixins": ["knifeclient.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.4",
+    "java": ">=21"
+  }
+}
